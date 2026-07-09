@@ -17,7 +17,7 @@ router.get('/', verifyToken, async (req, res) => {
 
 
 // Get countries by region from Rest Countries API
-router.get('/region/:region', verifyToken, async (req, res) => {
+router.get('/region/:region', async (req, res) => {
   try {
     const response = await fetch(
       `https://restcountries.com/v3.1/region/${req.params.region}`
@@ -33,7 +33,7 @@ router.get('/region/:region', verifyToken, async (req, res) => {
 
 
 // Get country details by code from Rest Countries API
-router.get('/alpha/:code', verifyToken, async (req, res) => {
+router.get('/alpha/:code', async (req, res) => {
   try {
     const response = await fetch(
       `https://restcountries.com/v3.1/alpha/${req.params.code}`
