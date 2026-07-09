@@ -16,32 +16,64 @@ router.get('/', verifyToken, async (req, res) => {
 });
 
 
+// Get countries by region from API Ninjas
 router.get('/region/:region', async (req, res) => {
   try {
     const response = await fetch(
-      `https://restcountries.com/v5/region/${req.params.region}`
+      `https://api.api-ninjas.com/v1/country?region=${req.params.region}`,
+      {
+        headers: {
+          'X-Api-Key': process.env.COUNTRY_API_KEY
+        }
+      }
     );
 
     const data = await response.json();
 
-    res.status(200).json(data);
+    if (!response.ok) {
+      return res.status(response.status).json(data);
+    }
+
+    const countries = data.map((country) => ({
+      name: {
+        common: country.name
+      },
+      cca3: country.iso3,
+      flags: {
+        png: country.flag
+      }
+    }));
+
+    res.status(200).json(countries);
+
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
 
+// Get country by code
 router.get('/alpha/:code', async (req, res) => {
   try {
     const response = await fetch(
-      `https://restcountries.com/v5/alpha/${req.params.code}`
+      `https://api.api-ninjas.com/v1/country?name=${req.params.code}`,
+      {
+        headers: {
+          'X-Api-Key': process.env.COUNTRY_API_KEY
+        }
+      }
     );
 
     const data = await response.json();
 
+    if (!response.ok) {
+      return res.status(response.status).json(data);
+    }
+
     res.status(200).json(
       Array.isArray(data) ? data[0] : data
     );
+
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -55,6 +87,7 @@ router.get('/:countryId', verifyToken, async (req, res) => {
       .populate('quests');
 
     res.status(200).json(country);
+
   } catch (error) {
     console.log(error);
     res.status(500).json({ err: error.message });
