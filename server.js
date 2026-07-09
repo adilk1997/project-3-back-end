@@ -27,9 +27,9 @@ mongoose.connection.on('connected', async () => {
 app.use(express.json());
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://joyful-ganache-ae62a5.netlify.app'],
+  origin: 'https://joyful-ganache-ae62a5.netlify.app',
   credentials: true
-}))
+}));
 
 app.use(logger('dev'));
 
