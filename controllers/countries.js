@@ -16,7 +16,6 @@ router.get('/', verifyToken, async (req, res) => {
 });
 
 
-// Get countries by region from API Ninjas
 router.get('/region/:region', async (req, res) => {
   try {
     const response = await fetch(
@@ -38,9 +37,9 @@ router.get('/region/:region', async (req, res) => {
       name: {
         common: country.name
       },
-      cca3: country.iso3,
+      cca3: country.iso2,
       flags: {
-        png: country.flag
+        png: `https://flagcdn.com/w320/${country.iso2.toLowerCase()}.png`
       }
     }));
 
