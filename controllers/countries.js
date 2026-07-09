@@ -19,7 +19,7 @@ router.get('/', verifyToken, async (req, res) => {
 router.get('/region/:region', async (req, res) => {
   try {
     const response = await fetch(
-      `https://restcountries.com/v3.1/region/${req.params.region}`
+      `https://restcountries.com/v5/region/${req.params.region}?fields=name,flags,cca3`
     );
 
     const data = await response.json();
@@ -35,7 +35,7 @@ router.get('/region/:region', async (req, res) => {
 router.get('/alpha/:code', async (req, res) => {
   try {
     const response = await fetch(
-      `https://restcountries.com/v3.1/alpha/${req.params.code}`
+      `https://restcountries.com/v5/alpha/${req.params.code}?fields=name,flags,cca3`
     );
 
     const data = await response.json();
