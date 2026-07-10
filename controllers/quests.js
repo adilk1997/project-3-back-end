@@ -27,7 +27,7 @@ const continentFromRestCountries = (region) => {
 
 const getContinentForCountryName = async (countryName) => {
     const resp = await fetchFn(
-        `https://restcountries.com/v3.1/name/${encodeURIComponent(countryName)}?fields=region`
+        `https://api.restcountries.com/countries/v5?q=${encodeURIComponent(countryName)}`
     )
 
     if (!resp.ok) return null
