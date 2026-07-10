@@ -18,15 +18,21 @@ router.get('/', verifyToken, async (req, res) => {
 
 router.get('/region/:region', async (req, res) => {
   try {
-    const response = await fetch(
-      `https://restcountries.com/v5/region/${req.params.region}?fields=name,flags,cca3`
-    );
+    const url = `https://restcountries.com/v5/region/${req.params.region}?fields=name,flags,cca3`;
 
+    console.log('CALLING:', url);
+
+    const response = await fetch(url);
     const data = await response.json();
+
+    console.log('RESPONSE TYPE:', typeof data);
+    console.log('IS ARRAY:', Array.isArray(data));
+    console.log('DATA SAMPLE:', data?.[0]);
 
     res.status(200).json(data);
 
   } catch (error) {
+    console.log('ERROR:', error);
     res.status(500).json({ error: error.message });
   }
 });
