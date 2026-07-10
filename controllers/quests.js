@@ -27,13 +27,15 @@ const continentFromRestCountries = (region) => {
 
 const getContinentForCountryName = async (countryName) => {
     const resp = await fetchFn(
-        `https://restcountries.com/v3.1/name/${encodeURIComponent(countryName)}?fields=region`
+        `https://api.restcountries.com/countries/v5?q=${encodeURIComponent(countryName)}`,
+        { headers: { Authorization: `Bearer ${process.env.COUNTRY_API_KEY}` } }
     )
 
     if (!resp.ok) return null
 
     const data = await resp.json()
-    const first = Array.isArray(data) ? data[0] : data
+    // v5 wraps results in data.objects, not a bare array like v3.1 did
+    const first = data?.data?.objects?.[0]
     return continentFromRestCountries(first?.region)
 }
 
